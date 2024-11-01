@@ -1,0 +1,113 @@
+﻿using FamilySchedule.Migrations;
+using FamilySchedule.Models;
+using FamilySchedule.Models.Context;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Internal;
+
+namespace FamilySchedule.Controllers
+{
+    public class EventoController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+
+        public EventoController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        //metodo que retorna la lista de eventos
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Eventos.ToListAsync());
+        }
+
+        //Metodos Get y post para crear un evento        
+        public IActionResult Crear()
+        {
+
+            return View();
+        }
+        public async Task<IActionResult> Crear(EventArgs evento)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(evento);
+                await _context.SaveChangesAsync();
+
+                TempData["AlertMessage"] = "Evento Creado exitosamente";
+                return RedirectToAction("Index");
+            }
+
+            throw new Exception("El evento no se pudo crear, Intentelo nuevamente");
+
+        }
+
+        //metodo que valida que el evento que se edite exista mediante el id
+        public async Task<IActionResult> Editar(int id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var eventInfoFound = await _context.Eventos.FindAsync(id);
+
+            if(eventInfoFound == null)
+            {
+                return NotFound();
+            }
+
+            return View(eventInfoFound);
+        }
+
+        //metodo que edita
+        [HttpPost]
+        public async Task<IActionResult> Editar(EventoModel evento)
+        {
+            if (ModelState.IsValid)
+            {
+                var eventoEncontrado = await _context.Eventos.FindAsync(evento.Id);
+                if(eventoEncontrado != null)
+                {
+                    eventoEncontrado.Titulo = evento.Titulo;
+                    eventoEncontrado.Creador = evento.Creador;
+                    eventoEncontrado.Fecha = evento.Fecha;
+                    eventoEncontrado.Descripcion = evento.Descripcion;
+
+                    _context.Update(eventoEncontrado);
+                    await _context.SaveChangesAsync();
+                    TempData["AlertMessage"] = "Evento Actualizado exitosamente";
+                    return RedirectToAction("Index");
+                    
+                }
+            }
+
+            return NotFound();
+        }
+
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var eventoEncontrado = await _context.Eventos.FindAsync(id);
+
+                if (eventoEncontrado == null || id == null)
+                {
+                    return NotFound();
+                }             
+                   
+                _context.Eventos.Remove(eventoEncontrado);
+                await _context.SaveChangesAsync();
+                TempData["AlertMessage"] = "Evento Eliminado exitosamente";
+
+                return RedirectToAction("Index");
+
+            }
+            
+            return NotFound();
+        }
+
+    }
+}

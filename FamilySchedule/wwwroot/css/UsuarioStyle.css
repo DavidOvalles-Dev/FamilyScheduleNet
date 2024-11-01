@@ -1,0 +1,55 @@
+﻿* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: #34495e;
+}
+
+.headerNav {
+    background-color: black;
+}
+
+
+
+.main {
+    width: 450px;
+    height: 100vh;
+    position: fixed;
+    top: 10vh;
+    right: 0;
+    background-color: white;
+    color: black;
+}
+.notificationTitle {
+    color: white;
+    background-color: #343a40;
+    text-align:center;
+    height:50px;
+    
+}
+
+/* Para pantallas pequeñas (ocultar o ajustar el tamaño del sidebar) */
+@media (max-width: 768px) {
+    .main {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+}
+
+.mainContainer {
+    background-color: white;
+    width: 100%;
+    height: 500px;
+    padding: 10px;
+    position: absolute;
+    top: 200px;
+}
+
+.footerDerecha {
+}
+
+.footerIzquierda {
+}

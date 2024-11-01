@@ -1,0 +1,37 @@
+﻿*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: #34495e;
+}
+.headerNav{
+    background-color:black;
+}
+
+.footer{
+    
+    position:absolute;
+    bottom:0px;
+    background-color:grey;
+    width:100%;
+    padding:10px;
+    
+
+}
+
+.mainContainer{
+    background-color: white;
+    width: 100%;
+    height:500px;
+    padding:10px;
+    position:absolute;
+    top:200px;
+}
+.footerDerecha{
+    
+}
+.footerIzquierda {
+
+}

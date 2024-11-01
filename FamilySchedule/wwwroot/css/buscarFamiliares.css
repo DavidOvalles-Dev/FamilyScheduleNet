@@ -1,0 +1,48 @@
+﻿
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: #34495e;
+}
+
+.formContainer {
+    padding: 30px;
+    width: 100%;
+    height: 500px;
+    display: grid;
+    place-items: center;
+}
+
+.inpContainer {
+    background-color: #5d6d7e;
+    padding: 10px;
+    width: 400px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    border: solid 1px black;
+    border-radius: 10px;
+    box-shadow: 10px 20px 10px 10px;
+}
+
+.inp {
+    margin-top: 30px;
+    margin-bottom: 0px
+}
+
+.btnSubmit {
+    margin-top: 30px;
+}
+
+p {
+    font-family: 'Comic Sans MS';
+    font-size: 20px
+}
+
+a {
+    color: white;
+}
