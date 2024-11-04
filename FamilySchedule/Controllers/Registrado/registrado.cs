@@ -28,69 +28,60 @@ namespace FamilySchedule.Controllers.Registrado
         {
             var correoUsuario = HttpContext.Session.GetString("Correo");
 
-            if(string.Equals(correoUsuario, correoUsuarioInvitado, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(correoUsuario, correoUsuarioInvitado, StringComparison.OrdinalIgnoreCase))
             {
-                TempData["MismoCorreo"] = "No te puedes auto agregar. ";
+                TempData["MismoCorreo"] = "No te puedes auto agregar.";
                 return View("BuscarFamiliares");
             }
             try
             {
+                //busca al usuario en la bd
+
                 var usuarioBd = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Correo == correoUsuarioInvitado);
+                    .FirstOrDefaultAsync(u => u.Correo == correoUsuarioInvitado);
 
                 if (usuarioBd == null)
                 {
-                    TempData["InvitacionFallida"] = "Esta direccion no esta registrada";
+                    TempData["InvitacionFallida"] = "Esta dirección no está registrada";
                     return View("BuscarFamiliares");
                 }
-                    
-                if(usuarioBd.invitacionGrupo != true)
+
+                if (usuarioBd.invitacionGrupo != true)
                 {
                     var notificacionesFamiliares = new NotificacionesModel
                     {
-
                         usuarioId = usuarioBd.Id,
                         Tipo = 1,
-                        Mensaje = correoUsuario + " te esta invitando a unirte a su grupo familiar",
+                        Mensaje = correoUsuario + " te está invitando a unirte a su grupo familiar",
                         Fecha = DateTime.Now,
                         UsuarioCorreo = correoUsuarioInvitado,
                         Admin = correoUsuario
                     };
 
-                    var agregarDatosUsuario = new Usuario
-                    {
-                        Admin2 = correoUsuario,
-                        invitacionGrupo = true,
-                        Apellido = usuarioBd.Apellido,
-                    };
-
-                    //TO DO priority = 2/10 = por ahora se pueden mandar varias notificaciones repetidas, 
-                    //hacer que se valide el tipo de invitacion ya que si es familiar no es necesario mandar mas de una
-
-                    _context.Notificaciones.Add(notificacionesFamiliares);
-                    _context.Usuarios.Update(agregarDatosUsuario);
-
+                    // Actualizar directamente el objeto usuarioBd
                     usuarioBd.Admin2 = correoUsuario;
+                    usuarioBd.invitacionGrupo = true;
 
+                    // Agregar la notificación y actualizar el usuario
+                    _context.Notificaciones.Add(notificacionesFamiliares);
                     _context.Usuarios.Update(usuarioBd);
                     await _context.SaveChangesAsync();
 
-                    TempData["AlertMessage"] = "Invitacion enviada exitosamente";
+                    TempData["AlertMessage"] = "Invitación enviada exitosamente";
                 }
                 else
                 {
                     TempData["agrupado"] = "Este usuario ya forma parte de un grupo familiar";
                     return View("BuscarFamiliares");
                 }
-         
-                    
             }
             catch (Exception)
             {
-                TempData["errorInvitacion"] = "Ocurrio un error al enviar la invitacion";
+                TempData["errorInvitacion"] = "Ocurrió un error al enviar la invitación";
             }
             return View("BuscarFamiliares");
-        }
+    }
+
         public async Task<IActionResult> cerrarSeccionAsync()
         {
             HttpContext.Session.Clear();
@@ -106,12 +97,11 @@ namespace FamilySchedule.Controllers.Registrado
         {
             var buscarInvitacionBd = await _context.Notificaciones.FindAsync(id);
             var correoUsuario = HttpContext.Session.GetString("Correo");
-
             var buscarUsuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Correo == correoUsuario);
 
             try
             {
-                buscarUsuario.invitacionGrupo = true;
+                buscarUsuario.invitacionGrupo = false;
                 buscarUsuario.Admin2 = buscarInvitacionBd.Admin;
                 buscarInvitacionBd.Admin = correoUsuario;
 
@@ -171,8 +161,10 @@ namespace FamilySchedule.Controllers.Registrado
             }
 
             // Busca el usuario en la base de datos
-            var buscarUsuarioBd = await _context.Notificaciones.FirstOrDefaultAsync(u => u.UsuarioCorreo == correoUsuario);
+            var buscarUsuarioBd = await _context.Usuarios.FirstOrDefaultAsync(u => u.Correo == correoUsuario);
             
+            if(buscarUsuarioBd.invitacionGrupo != false)
+            {
                 var notificaciones = await _context.Notificaciones
                     .Where(n => n.UsuarioCorreo == correoUsuario)
                     .ToListAsync();
@@ -181,9 +173,11 @@ namespace FamilySchedule.Controllers.Registrado
                 {
                     TempData["NoNotificaciones"] = "No tienes notificaciones pendientes.";
                 }
-
                 // Retorna la vista con el modelo
                 return View("IndexRegistrado", notificaciones);
+            }
+             
+               return View();
         }
             
     }
