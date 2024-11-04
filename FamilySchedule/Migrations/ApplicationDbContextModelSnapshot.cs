@@ -47,7 +47,7 @@ namespace FamilySchedule.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Eventos");
+                    b.ToTable("Eventos", (string)null);
                 });
 
             modelBuilder.Entity("FamilySchedule.Models.NotificacionesModel", b =>
@@ -83,7 +83,7 @@ namespace FamilySchedule.Migrations
 
                     b.HasIndex("usuarioId");
 
-                    b.ToTable("Notificaciones");
+                    b.ToTable("Notificaciones", (string)null);
                 });
 
             modelBuilder.Entity("FamilySchedule.Models.TiposDeNotificaciones", b =>
@@ -100,7 +100,7 @@ namespace FamilySchedule.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TiposDeNotificaciones");
+                    b.ToTable("TiposDeNotificaciones", (string)null);
                 });
 
             modelBuilder.Entity("FamilySchedule.Models.Usuario", b =>
@@ -143,7 +143,7 @@ namespace FamilySchedule.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("FamilySchedule.Models.NotificacionesModel", b =>

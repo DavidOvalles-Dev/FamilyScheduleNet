@@ -22,8 +22,6 @@ namespace FamilySchedule.Models
         [Required(ErrorMessage = "Este campo es requerido")]
         public string? ConfirmarContraseña { get; set; }
         public bool invitacionGrupo { get; set; }
-        [NotMapped]
-        public string Admin {  get; set; }   
         public string? Admin2 { get; set; }
         //Relacion con las notificaciones
 

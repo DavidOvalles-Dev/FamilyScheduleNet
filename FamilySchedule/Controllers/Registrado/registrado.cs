@@ -59,7 +59,7 @@ namespace FamilySchedule.Controllers.Registrado
 
                     var agregarDatosUsuario = new Usuario
                     {
-                        Admin = correoUsuario,
+                        Admin2 = correoUsuario,
                         invitacionGrupo = true,
                         Apellido = usuarioBd.Apellido,
                     };
@@ -70,7 +70,7 @@ namespace FamilySchedule.Controllers.Registrado
                     _context.Notificaciones.Add(notificacionesFamiliares);
                     _context.Usuarios.Update(agregarDatosUsuario);
 
-                    usuarioBd.Admin = correoUsuario;
+                    usuarioBd.Admin2 = correoUsuario;
 
                     _context.Usuarios.Update(usuarioBd);
                     await _context.SaveChangesAsync();
