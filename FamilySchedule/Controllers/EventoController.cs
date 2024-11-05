@@ -109,5 +109,17 @@ namespace FamilySchedule.Controllers
             return NotFound();
         }
 
+        public async Task<IActionResult> GetEventos()
+        {
+            var eventos = await _context.Eventos
+                .Select(e => new {
+                    id = e.Id,
+                    title = e.Titulo,
+                    start = e.Fecha.ToString("yyyy-MM-ddTHH:mm:ss"), // Formato ISO 8601
+                    description = e.Descripcion
+                }).ToListAsync();
+            return Json(eventos);
+        }
+
     }
 }

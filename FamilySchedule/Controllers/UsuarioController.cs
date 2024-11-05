@@ -24,8 +24,7 @@ namespace FamilySchedule.Controllers
         //metodo que valida el uusario
         [HttpPost]
         public async Task<IActionResult> IniciarSeccion(string correo, string clave)
-        {
-           
+        {       
             //asi se valida que el correo que se inserte sea el mismo que el correo que esta en la base de datos
             var usuario = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.Correo == correo);
@@ -45,16 +44,12 @@ namespace FamilySchedule.Controllers
 
             return RedirectToAction("IndexRegistrado", "Registrado");
 
-
         }
-
         //metodos para crear usuario y vista
-
         public IActionResult RegistrarUsuario(){ 
             
                return View();
         }
-
         public async Task<IActionResult> CrearUsuario(Usuario solicitudCrearUsuario)
         {
             
@@ -92,7 +87,6 @@ namespace FamilySchedule.Controllers
             #endregion
 
             
-
             if (solicitudCrearUsuario.Contraseña != solicitudCrearUsuario.ConfirmarContraseña)
             {
                 TempData["ContraseñaIncorrecta"] = "password must be similar";
@@ -123,7 +117,7 @@ namespace FamilySchedule.Controllers
             else {
                 TempData["noNull"] = "Error inesperado";
             }
-
+            //TO DO: redireccionar al inicio de seccion
             return View("RegistrarUsuario", solicitudCrearUsuario);
         }
 

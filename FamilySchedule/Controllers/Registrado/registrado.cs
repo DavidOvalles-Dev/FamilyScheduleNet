@@ -108,9 +108,7 @@ namespace FamilySchedule.Controllers.Registrado
                 _context.Notificaciones.Update(buscarInvitacionBd);
                 _context.Usuarios.Update(buscarUsuario);
 
-                await _context.SaveChangesAsync();
-
-                TempData["Exito"] = "La invitación ha sido aceptada exitosamente.";
+                await _context.SaveChangesAsync();             
             }
             catch (Exception ex) {
 
@@ -118,7 +116,8 @@ namespace FamilySchedule.Controllers.Registrado
                 return View("IndexRegistrado");
             }
 
-            return View("IndexRegistrado");
+            TempData["Exito"] = "La invitación ha sido aceptada exitosamente.";
+            return RedirectToAction("IndexRegistrado");
         }
         public async Task<IActionResult> RechazarInvitacion(int id) { 
 

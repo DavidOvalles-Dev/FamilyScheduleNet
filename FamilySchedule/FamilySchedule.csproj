@@ -7,15 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\_MostrarModal.cshtml" />
     <Content Remove="wwwroot\js\ShowModal.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Shared\_MostrarModal.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\css\IniciarSeccion.css" />
     <_ContentIncludedByDefault Remove="wwwroot\js\ShowModal.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Shared\_MostrarModal.cshtml" />
     <None Include="wwwroot\js\ShowModal.js" />
   </ItemGroup>
 
@@ -31,6 +34,10 @@
 
   <ItemGroup>
     <Folder Include="Views\ApplicationDveloperView\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_MostrarModal.cshtml" />
   </ItemGroup>
 
 </Project>
