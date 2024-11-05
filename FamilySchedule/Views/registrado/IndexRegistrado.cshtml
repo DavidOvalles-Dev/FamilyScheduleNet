@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FamilySchedule.Models.NotificacionesModel>
+﻿@model FamilySchedule.Models.ViewModel.EventoNotificacionesViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,10 +68,10 @@
             </script>
         }
 
-        @if (Model != null && Model.Any())
+        @if (Model.Notificaciones != null && Model.Notificaciones.Any())
         {
             <ul class="list-group">
-                @foreach (var notificaciones in Model)
+                @foreach (var notificaciones in Model.Notificaciones)
                 {
                     <li class="list-group-item">
                         <strong>@notificaciones.Mensaje</strong>
@@ -89,19 +89,7 @@
         else
         {
             <p><strong>No tienes notificaciones pendientes</strong></p>
-            @if (TempData["NoNotificaciones"] != null)
-            {
-                <script>
-                    Swal.fire({
-                        title: "Información",
-                        text: "@TempData["NoNotificaciones"]",
-                        icon: "info",
-                        confirmButtonText: "Aceptar"
-                    });
-                </script>
-            }
         }
-        
     </div>
 
     <script>

@@ -152,7 +152,7 @@ namespace FamilySchedule.Controllers.Registrado
         {
             var correoUsuario = HttpContext.Session.GetString("Correo");
 
-            //Verifica si el correo está disponible
+            // Verifica si el correo está disponible
             if (string.IsNullOrEmpty(correoUsuario))
             {
                 TempData["error"] = "Correo no disponible en la sesión.";
@@ -161,22 +161,56 @@ namespace FamilySchedule.Controllers.Registrado
 
             // Busca el usuario en la base de datos
             var buscarUsuarioBd = await _context.Usuarios.FirstOrDefaultAsync(u => u.Correo == correoUsuario);
-            
-            if(buscarUsuarioBd.invitacionGrupo != false)
+
+            if (buscarUsuarioBd != null && buscarUsuarioBd.invitacionGrupo != false)
             {
                 var notificaciones = await _context.Notificaciones
                     .Where(n => n.UsuarioCorreo == correoUsuario)
                     .ToListAsync();
 
-                if (!notificaciones.Any())
+                var eventos = await _context.Eventos.ToListAsync(); // Obtener los eventos
+
+                var viewModel = new EventoNotificacionesViewModel
                 {
-                    TempData["NoNotificaciones"] = "No tienes notificaciones pendientes.";
-                }
-                // Retorna la vista con el modelo
-                return View("IndexRegistrado", notificaciones);
+                    Notificaciones = notificaciones,
+                    Evento = eventos.FirstOrDefault() // O ajusta según tus necesidades
+                };
+
+                return View(viewModel);
             }
-             
-               return View();
+
+            // En caso de que no haya notificaciones
+            return View(new EventoNotificacionesViewModel { Notificaciones = new List<NotificacionesModel>() });
+            //var correoUsuario = HttpContext.Session.GetString("Correo");
+
+            ////Verifica si el correo está disponible
+            //if (string.IsNullOrEmpty(correoUsuario))
+            //{
+            //    TempData["error"] = "Correo no disponible en la sesión.";
+            //    return RedirectToAction("Index", "Evento");
+            //}
+
+            //// Busca el usuario en la base de datos
+            //var buscarUsuarioBd = await _context.Usuarios.FirstOrDefaultAsync(u => u.Correo == correoUsuario);
+
+            //if(buscarUsuarioBd.invitacionGrupo != false)
+            //{
+            //    var notificaciones = await _context.Notificaciones
+            //        .Where(n => n.UsuarioCorreo == correoUsuario)
+            //        .ToListAsync();
+
+            //    var eventos = await _context.Eventos.ToListAsync(); // Obtener los eventos
+
+            //    var viewModel = new EventoNotificacionesViewModel
+            //    {
+            //        Notificaciones = notificaciones,
+            //        Evento = eventos // O ajusta según tus necesidades
+            //    };
+
+            //    return View(viewModel);
+            //}
+
+            //   return View();
         }
             
     }
