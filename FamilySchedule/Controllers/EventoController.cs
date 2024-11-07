@@ -22,11 +22,12 @@ namespace FamilySchedule.Controllers
             return View(await _context.Eventos.ToListAsync());
         }
 
-        //Metodos Get y post para crear un evento        
+        //Metodos Get y post para crear un evento
+        [HttpGet]
         public IActionResult Crear()
         {
 
-            return View();
+            return PartialView("_Crear");
         }
         public async Task<IActionResult> Crear(EventArgs evento)
         {
@@ -37,10 +38,10 @@ namespace FamilySchedule.Controllers
                 await _context.SaveChangesAsync();
 
                 TempData["AlertMessage"] = "Evento Creado exitosamente";
-                return RedirectToAction("Index");
+                return Json(new { success = true, message = "Evento creado exitosamente." });
             }
 
-            throw new Exception("El evento no se pudo crear, Intentelo nuevamente");
+            return PartialView("_Crear", evento);
 
         }
 

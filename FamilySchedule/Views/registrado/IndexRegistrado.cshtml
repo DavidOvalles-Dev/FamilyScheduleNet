@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/FamilySchedule.styles.css" asp-append-version="true" />
 </head>
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">FSchedule</a>
@@ -20,14 +21,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <button class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Family Utilities
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Mi Familia</a></li>
-                            <li><a class="dropdown-item" href="@Url.Action("BuscarFamiliares","Registrado")">Agregar Familiar</a></li>
-                            <li><a onclick="showInPopup('@Url.Action("Create", "Eventos", new { id = 0 }, Context.Request.Scheme)' ,'')" class="dropdown-item"><i class="oi oi-plus"></i> Planear Evento</a></li>
+                            <li><a onclick="showInPopup('@Url.Action("Crear", "Evento", new { id = 0 }, Context.Request.Scheme)' ,'')" class="btn btn-sm btn-primary text-white"><i class="oi oi-plus"></i> Agregar un evento</a></li>
+                            <li><a href="@Url.Action("Crear", "Evento")" class="dropdown-item"> Planear Evento</a></li>
                             <li><a class="dropdown-item" href="#">Asignar Tarea</a></li>
                             <li><a class="dropdown-item" href="#">Family Schedule</a></li>
                             <li><a class="btn btn-danger" href="@Url.Action("cerrarSeccion", "Registrado")"><i class="fa-solid fa-door-closed"></i></a></li>
@@ -95,11 +90,12 @@
                 </table>
             </div>
         </div>
-    
 
-    @* Modal code for Delete action *@
-    <!-- <partial name="_MostrarModal" /> -->
-    <!-- <partial name="_ModalEliminar" /> -->
+   
+
+   
+    <partial name="_MostrarModal" /> 
+   <partial name="ModalEliminar" /> 
 
     <script>
         sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Eventos/Delete/', false);
@@ -126,10 +122,19 @@
             };
         </script>
     }
+    @if (TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["AlertMessage"]
+        </div>
+    }
 
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/ShowModal.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <link rel="stylesheet" href="~/css/UsuarioStyle.css" asp-append-version="true" />
