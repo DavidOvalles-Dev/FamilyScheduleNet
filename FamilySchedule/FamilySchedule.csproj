@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Shared\_MostrarModal.cshtml" />
+    <None Include="Views\registrado\_MostrarModal.cshtml" />
     <None Include="wwwroot\js\ShowModal.js" />
   </ItemGroup>
 

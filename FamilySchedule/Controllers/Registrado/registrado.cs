@@ -173,7 +173,7 @@ namespace FamilySchedule.Controllers.Registrado
                 var viewModel = new EventoNotificacionesViewModel
                 {
                     Notificaciones = notificaciones,
-                    Evento = eventos.FirstOrDefault() // O ajusta según tus necesidades
+                    Evento = eventos 
                 };
 
                 return View(viewModel);
