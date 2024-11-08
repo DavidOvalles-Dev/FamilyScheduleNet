@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    //verificando el correo si existe en la base de datos
+    var correoUsuario = Context.Session.GetString("Correo");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,9 +15,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
-    <header>
+
+    <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+            @if (!string.IsNullOrEmpty(correoUsuario))
+            {
+                <!-- Opciones para el usuario registrado -->
+        <div class="container-fluid"> container-fluid
+            
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item dropdown">
+                    
+                    <button class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Family Utilities
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Mi Familia</a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("BuscarFamiliares","Registrado")">Agregar Familiar</a></li>
+                        <li><a class="dropdown-item" href="#">Planear Evento</a></li>
+                        <li><a class="dropdown-item" href="#">Asignar Tarea</a></li>
+                        <li><a class="dropdown-item" href="#">Family Schedule</a></li>
+                        <li><a class="btn btn-danger" href="@Url.Action("cerrarSeccion", "Registrado")"><i class="fa-solid fa-door-closed"></i></a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="d-flex">
+
+
+            </form>
+        </div>
         
-    </header>
+            }
+            else
+            {
+                <!-- Opciones para el usuario no registrado -->
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="Usuario" asp-action="IniciarSeccion"><i class="fa-regular fa-address-card"></i> Iniciar Seccion</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Usuario" asp-action="RegistrarUsuario"><i class="fa-solid fa-user-large"></i> Registrarse</a>
+
+                    <form class="d-flex">
+                        <input class="form-control me-sm-2" type="search" placeholder="Search">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            }
+    </nav>
+
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
