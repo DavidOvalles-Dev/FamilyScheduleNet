@@ -52,7 +52,16 @@ namespace FamilySchedule.Controllers
         }
         public async Task<IActionResult> CrearUsuario(Usuario solicitudCrearUsuario)
         {
-            
+
+            //sacando el correo y la clave para el inicio de sesion
+
+            string InicioCorreo = solicitudCrearUsuario.Correo;
+            string InicioClave = solicitudCrearUsuario.Contraseña;
+
+
+            //lo agrego a la variable para sacar la accion
+            var resultado  =  await IniciarSeccion(InicioCorreo, InicioClave);
+
             #region validaciones
             if (string.IsNullOrEmpty(solicitudCrearUsuario.Nombre))
             {
@@ -86,6 +95,7 @@ namespace FamilySchedule.Controllers
             }
             #endregion
 
+
             
             if (solicitudCrearUsuario.Contraseña != solicitudCrearUsuario.ConfirmarContraseña)
             {
@@ -93,26 +103,26 @@ namespace FamilySchedule.Controllers
                 return View("RegistrarUsuario", solicitudCrearUsuario);
 
             }
+            // Validación del estado del modelo y existencia del correo en la base de datos
             if (ModelState.IsValid)
             {
-                //con esta operacion buscamos en la base de datos que haya un correo igual al que ingrese un nuevo usuario
-
                 var existeUsuario = await _context.Usuarios
                     .AnyAsync(u => u.Correo == solicitudCrearUsuario.Correo);
 
                 if (existeUsuario)
                 {
-
                     TempData["CorreoExistente"] = "Este correo ya existe";
                     return View("RegistrarUsuario", solicitudCrearUsuario);
                 }
 
+                // Guardar el usuario en la base de datos
                 _context.Add(solicitudCrearUsuario);
                 await _context.SaveChangesAsync();
 
-                TempData["AlertMessage"] = "Su usuario se creo exitosamente";
-                return RedirectToAction("RegistrarUsuario");
+                TempData["AlertMessage"] = "Su usuario se creó exitosamente";
 
+                // Iniciar sesión automáticamente después de crear el usuario
+                return await IniciarSeccion(solicitudCrearUsuario.Correo, solicitudCrearUsuario.Contraseña);
             }
             else {
                 TempData["noNull"] = "Error inesperado";
